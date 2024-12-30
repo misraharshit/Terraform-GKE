@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: sysctl-config
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      app: sysctl-config
+  template:
+    metadata:
+      labels:
+        app: sysctl-config
+    spec:
+      hostPID: true
+      containers:
+      - name: sysctl
+        image: busybox:1.28
+        command: ["sh", "-c", "sysctl -w vm.max_map_count=262144"]
+        securityContext:
+          privileged: true
